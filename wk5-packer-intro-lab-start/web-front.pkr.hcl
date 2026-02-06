@@ -45,7 +45,7 @@ build {
 
   provisioner "file" {
     source = "./files/index.html"
-    destination = "/var/www/html/index.html"
+    destination = "web/html/index.html"
     # COMPLETE ME add the HTML file to your image
   }
 
@@ -61,7 +61,11 @@ build {
     timeout = "10s"
   }
 
-
+  provisioner "shell" {
+    script = "./scripts/setup-nginx"
+    pause_before = "10s"
+    timeout = "10s"
+  }
   # COMPLETE ME add additional provisioners to run shell scripts and complete any other tasks
 }
 
