@@ -12,7 +12,7 @@ packer {
 source "amazon-ebs" "debian" {
   ami_name      = "web-nginx-aws"
   instance_type = "t2.micro"
-  region        = "us-west-2"
+  region        = "us-east-2"
   source_ami_filter {
     filters = {
       name                = "debian-*-amd64-*"
@@ -32,13 +32,13 @@ build {
     "source.amazon-ebs.debian"
     # COMPLETE ME Use the source defined above
   ]
-  
+
   # https://developer.hashicorp.com/packer/docs/templates/hcl_templates/blocks/build/provisioner
   provisioner "shell" {
     inline = [
       "echo creating directories",
-      "mkdir /web/html",
-      "chown -R admin:admin /web/html",
+      "sudo mkdir -p /web/html",
+      "sudo chown -R admin:admin /web/html",
       # COMPLETE ME add inline scripts to create necessary directories and change directory ownership.
       # See nginx.conf file for root directory where files will be served.
       # Files need appropriate ownership for default user
@@ -46,27 +46,27 @@ build {
   }
 
   provisioner "file" {
-    source = "./files/index.html"
-    destination = "web/html/index.html"
+    source      = "./files/index.html"
+    destination = "/web/html/index.html"
     # COMPLETE ME add the HTML file to your image
   }
 
   provisioner "file" {
-    source = "./files/nginx.conf"
+    source      = "./files/nginx.conf"
     destination = "/etc/nginx/nginx.conf"
     # COMPLETE ME add the nginx.conf file to your image
   }
-  
+
   provisioner "shell" {
-    script = "./scripts/install-nginx"
+    script       = "./scripts/install-nginx"
     pause_before = "10s"
-    timeout = "10s"
+    timeout      = "10s"
   }
 
   provisioner "shell" {
-    script = "./scripts/setup-nginx"
+    script       = "./scripts/setup-nginx"
     pause_before = "10s"
-    timeout = "10s"
+    timeout      = "10s"
   }
   # COMPLETE ME add additional provisioners to run shell scripts and complete any other tasks
 }
