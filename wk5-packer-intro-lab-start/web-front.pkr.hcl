@@ -29,6 +29,7 @@ source "amazon-ebs" "debian" {
 build {
   name = "web-nginx"
   sources = [
+
     # COMPLETE ME Use the source defined above
   ]
   
@@ -43,6 +44,8 @@ build {
   }
 
   provisioner "file" {
+    source = "./files/index.html"
+    destination = "/var/www/html/index.html"
     # COMPLETE ME add the HTML file to your image
   }
 
