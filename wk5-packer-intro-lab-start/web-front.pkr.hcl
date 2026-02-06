@@ -50,8 +50,17 @@ build {
   }
 
   provisioner "file" {
+    source = "./files/nginx.conf"
+    destination = "/etc/nginx/nginx.conf"
     # COMPLETE ME add the nginx.conf file to your image
   }
+  
+  provisioner "shell" {
+    script = "./scripts/install-nginx"
+    pause_before = "10s"
+    timeout = "10s"
+  }
+
 
   # COMPLETE ME add additional provisioners to run shell scripts and complete any other tasks
 }
